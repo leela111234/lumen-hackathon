@@ -4,16 +4,41 @@ import { useNavigate } from 'react-router-dom';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleLogin = (e) => {
     e.preventDefault();
     
-    // Here you would add your actual authentication logic (API call, etc.)
-    console.log('Logging in with:', email, password);
-    
-    // For now, if login is successful, navigate to /dashboard
-    navigate('/dashboard');
+    // Make an API call to check credentials
+    fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // If login is successful, check the user role and redirect accordingly
+          const { user } = data;
+          if (user.Type === 'Admin') {
+            navigate('/admin-dashboard');
+          } else if (user.Type === 'Manager') {
+            navigate('/manager-dashboard');
+          } else if (user.Type === 'Staff') {
+            navigate('/dashboard');
+          }
+        } else {
+          // If credentials are incorrect, show an error message
+          setErrorMessage(data.message || 'Login failed');
+        }
+      })
+      .catch((err) => {
+        setErrorMessage('An error occurred. Please try again.');
+        console.error('Login error:', err);
+      });
   };
 
   return (
@@ -49,6 +74,13 @@ const LoginPage = () => {
             Log In
           </button>
         </form>
+
+        {errorMessage && (
+          <div className="text-red-500 text-sm mt-4 text-center">
+            {errorMessage}
+          </div>
+        )}
+
         <div className="mt-4 text-center">
           <p className="text-sm">Don't have an account? <a href="/signup" className="text-blue-500 hover:text-blue-700">Sign Up</a></p>
         </div>

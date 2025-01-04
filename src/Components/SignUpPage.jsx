@@ -1,14 +1,47 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Handle the sign-up logic (API call, redirect, etc.)
-    console.log('Signing up with:', email, password, role);
+
+    // Validate form data
+    if (!email || !password || !role) {
+      setErrorMessage('All fields are required');
+      return;
+    }
+
+    // Create new user data
+    const newUser = { email, password, role };
+
+    // Make a POST request to the backend to sign up
+    fetch('http://localhost:5000/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUser),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Redirect to login page after successful signup
+          navigate('/login');
+        } else {
+          // Show error message if signup fails
+          setErrorMessage(data.message || 'Signup failed');
+        }
+      })
+      .catch((err) => {
+        setErrorMessage('An error occurred. Please try again.');
+        console.error('Signup error:', err);
+      });
   };
 
   return (
@@ -59,6 +92,13 @@ const SignUpPage = () => {
             Sign Up
           </button>
         </form>
+
+        {errorMessage && (
+          <div className="text-red-500 text-sm mt-4 text-center">
+            {errorMessage}
+          </div>
+        )}
+
         <div className="mt-4 text-center">
           <p className="text-sm">Already have an account? <a href="/login" className="text-blue-500 hover:text-blue-700">Log In</a></p>
         </div>

@@ -151,7 +151,7 @@ import {
       <div className="flex flex-col md:flex-row min-h-screen">
         <Sidebar />
         <div className="flex-1 p-6 overflow-y-auto">
-          <h2 className="text-2xl font-semibold mb-4">Staff Dashboard</h2>
+          <h2 className="text-2xl font-semibold mb-4">Manager Dashboard</h2>
   
           {/* Overview Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
