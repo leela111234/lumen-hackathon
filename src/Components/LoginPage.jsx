@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Handle the login logic (API call, redirect, etc.)
+    
+    // Here you would add your actual authentication logic (API call, etc.)
     console.log('Logging in with:', email, password);
+    
+    // For now, if login is successful, navigate to /dashboard
+    navigate('/dashboard');
   };
 
   return (

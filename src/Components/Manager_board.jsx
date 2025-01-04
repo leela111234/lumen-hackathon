@@ -1,16 +1,17 @@
 import {
+  ArcElement,
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Legend,
   LinearScale,
   LineElement,
   PointElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
 import { useState } from "react";
-import { Bar, Pie, Line } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
 import Sidebar from "./Sidebar";
 
 ChartJS.register(
@@ -21,7 +22,8 @@ ChartJS.register(
   PointElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 const Staff_dashboard = () => {
@@ -50,6 +52,17 @@ const Staff_dashboard = () => {
     },
     {
       id: 3,
+      productName: "HP 5406zl",
+      description: "HP ProCurve Switch 5406zl",
+      category: "Switch",
+      modelNumber: "ABC456",
+      stockLevel: 300,
+      reorderPoint: 100,
+      orderStatus: "InProgress",
+      orderDate: "2023-11-06",
+    },
+    {
+      id: 4,
       productName: "DOCSIS 3.1 Cable Modem",
       description: "Superfast speeds up to 10 gigabits per second (Gbps)",
       category: "Modem",
@@ -101,8 +114,12 @@ const Staff_dashboard = () => {
       {
         label: "Order Status",
         data: [
-          filteredProducts.filter((product) => product.orderStatus === "Delivered").length,
-          filteredProducts.filter((product) => product.orderStatus === "InProgress").length,
+          filteredProducts.filter(
+            (product) => product.orderStatus === "Delivered"
+          ).length,
+          filteredProducts.filter(
+            (product) => product.orderStatus === "InProgress"
+          ).length,
         ],
         backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 159, 64, 0.6)"],
       },
@@ -113,7 +130,9 @@ const Staff_dashboard = () => {
   const getMonthlyOrderData = () => {
     const monthlyData = {};
     filteredProducts.forEach((product) => {
-      const month = new Date(product.orderDate).toLocaleString("default", { month: "long" });
+      const month = new Date(product.orderDate).toLocaleString("default", {
+        month: "long",
+      });
       monthlyData[month] = (monthlyData[month] || 0) + 1;
     });
 
@@ -170,19 +189,19 @@ const Staff_dashboard = () => {
         {/* Charts for Stock Levels, Order Status, and Monthly Orders */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {/* Stock Levels Chart */}
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4 h-80">
             <h3 className="text-lg font-semibold mb-4">Stock Levels</h3>
             <Bar data={stockChartData} />
           </div>
 
           {/* Order Status Chart */}
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4 h-96">
             <h3 className="text-lg font-semibold mb-4">Order Status</h3>
             <Pie data={orderStatusData} />
           </div>
 
           {/* Monthly Orders Chart */}
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-white shadow-md rounded-lg p-4 h-72">
             <h3 className="text-lg font-semibold mb-4">Monthly Order Trends</h3>
             <Line data={getMonthlyOrderData()} />
           </div>

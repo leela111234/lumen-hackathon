@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Staff_dashboard from './Components/Staff_dashboard';
 import LoginPage from './Components/LoginPage';
 import SignUpPage from './Components/SignUpPage';
+import Manager_board from './Components/Manager_board';
 
 const Home = () => (
   <div className="p-6">
@@ -27,6 +28,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/manager-dashboard" element={<Manager_board />} />
         </Routes>
       </div>
     </Router>
