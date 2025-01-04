@@ -4,6 +4,7 @@ import Staff_dashboard from './Components/Staff_dashboard';
 import LoginPage from './Components/LoginPage';
 import SignUpPage from './Components/SignUpPage';
 import Manager_board from './Components/Manager_board';
+import ProductManagement from './Components/ProductManagement';
 
 const Home = () => (
   <div className="p-6">
@@ -29,6 +30,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/manager-dashboard" element={<Manager_board />} />
+          <Route path="/product-management" element={<ProductManagement />} />
+
         </Routes>
       </div>
     </Router>
